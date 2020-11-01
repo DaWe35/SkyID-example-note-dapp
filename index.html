@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<title>Note & SkyID</title>
+
+<div class="show-if-logged-in logout-bar">
+	<a href="javascript: skyid.sessionDestroy()">Logout</a>
+</div>
+
+<div class="hide-if-logged-in big-margin">
+	<h2>Make a note while using <a href="https:/skynetid.hns.siasky.net">SkyID</a> for authentication</h2>
+
+	<!-- Button for login -->
+	<button onclick="javascript: skyid.sessionStart()" class="skyid-button">
+		<img src="SkyID_Logo_128_white.png" alt="SkyID" class="skyid-logo">
+		Sign in with SkyID
+	</button>
+</div>
+
+<div class="show-if-logged-in big-margin">
+	<textarea>Helooo</textarea>
+</div>
+
+
+<footer>Read more on <a href="https://github.com/DaWe35/SkyID-example-note-dapp" target="_blank">GitHub</a> -
+	forked from <a href="https://skyportal.xyz/_BF4CHsFIichxjdgAFhU-tEKqsoPDxC9OMsWbMkyMbz4KQ/" target="_blank">Note to myself</a>
+</footer>
+
+
+<!-- Initialize and setup SkyID -->
+<script src="http://skynetid.hns.siasky.net/skyid.js"></script>
+<script>
+	// var skyid = new SkyID('Example skapp')
+
+
+	// Optional: listen for callbacks
+	var skyid = new SkyID('Example skapp', skyidEventCallback)
+
+	function skyidEventCallback(message) {
+		switch (message) {
+			case 'login_fail':
+				console.log('Login failed')
+				break;
+			case 'login_success':
+				console.log('Login succeed!')
+				break;
+			case 'destroy':
+				console.log('Logout succeed!')
+				break;
+			default:
+				console.log(message)
+				break;
+		}
+	}
+</script>
