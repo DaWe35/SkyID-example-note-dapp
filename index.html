@@ -7,18 +7,19 @@
 	<a href="javascript: skyid.sessionDestroy()">Logout</a>
 </div>
 
-<div class="hide-if-logged-in big-margin">
+<div class="hide-if-logged-in">
 	<h2>Make a note while using <a href="https:/skynetid.hns.siasky.net">SkyID</a> for authentication</h2>
 
 	<!-- Button for login -->
-	<button onclick="javascript: skyid.sessionStart()" class="skyid-button">
+	<button onclick="skyid.sessionStart()" class="skyid-button button-blow big-margin">
 		<img src="SkyID_Logo_128_white.png" alt="SkyID" class="skyid-logo">
 		Sign in with SkyID
 	</button>
 </div>
 
-<div class="show-if-logged-in big-margin">
-	<textarea>Helooo</textarea>
+<div class="show-if-logged-in small-margin">
+	<textarea id="note">Helooo</textarea><br>
+	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
 </div>
 
 
@@ -51,5 +52,39 @@
 				console.log(message)
 				break;
 		}
+	}
+
+	function saveNote() {
+		// disable button
+		elem = document.getElementById('save_note')
+		elem.disabled = 'disabled'
+		elem.className += ' disabled'
+
+		// convert note to json
+		let note = document.getElementById('note').innerHTML
+		let json = JSON.stringify({ data: note })
+
+		// upload to registry with SkyID key
+		skyid.setRegistry('note', json, function(response) {
+			if (response != true) {
+				alert('Sorry, but upload failed :(')
+			}
+			
+			// enable button
+			removeClass(elem, 'disabled')
+			elem.disabled = ''
+		})
+	}
+
+
+	// of course, you can use jQuery, but this example is pure-js
+
+
+	function removeClass(el, classNameToRemove){
+		var elClass = ' ' + el.className + ' ';
+		while(elClass.indexOf(' ' + classNameToRemove + ' ') !== -1){
+			elClass = elClass.replace(' ' + classNameToRemove + ' ', '');
+		}
+		el.className = elClass;
 	}
 </script>
