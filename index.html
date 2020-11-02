@@ -3,11 +3,15 @@
 <meta charset="utf-8">
 <title>Note & SkyID</title>
 
-<div class="show-if-logged-in logout-bar">
+<div class="show-if-initialized show-if-logged-in logout-bar" style="display:none">
 	<a href="javascript: skyid.sessionDestroy()">Logout</a>
 </div>
 
-<div class="hide-if-logged-in">
+<div class="hide-if-initialized">
+	<h2 class="big-margin">Loading...</h2>
+</div>
+
+<div class="show-if-initialized hide-if-logged-in" style="display:none">
 	<h2>Make a note while using <a href="https:/skyaccounts.hns.siasky.net">SkyID</a> for authentication</h2>
 
 	<!-- Button for login -->
@@ -17,7 +21,7 @@
 	</button>
 </div>
 
-<div class="show-if-logged-in small-margin">
+<div class="show-if-initialized show-if-logged-in small-margin" style="display:none">
 	<textarea id="note"></textarea><br>
 	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
 </div>
@@ -29,7 +33,11 @@
 
 
 <!-- Initialize and setup SkyID -->
-<script src="https://skyaccounts.hns.siasky.net/skyid.js"></script>
+
+<!-- <script src="https://skyaccounts.hns.siasky.net/skyid.js"></script> -->
+ 
+ <script src="http://idtest.local/skyid.js"></script>
+
 <script>
 	// var skyid = new SkyID('Example skapp')
 
