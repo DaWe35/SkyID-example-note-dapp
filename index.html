@@ -55,7 +55,7 @@
 		}
 	}
 
-	if (skyid.seed != '') {
+	if (skyid.seed != '') { // if user logged in
 		fetchNote()
 	}
 
@@ -63,7 +63,7 @@
 		var elem = document.getElementById('note')
 		elem.disabled = 'disabled'
 		elem.className += ' disabled'
-		skyid.getRegistry('note', function(response) {
+		skyid.getFile('note', function(response) {
 			if (response == false) {
 				alert('Sorry, but note fetching failed :(')
 			}
@@ -85,7 +85,7 @@
 		var json = JSON.stringify({ data: note })
 
 		// upload to registry with SkyID key
-		skyid.setRegistry('note', json, function(response) {
+		skyid.setFile('note', json, function(response) {
 			if (response != true) {
 				alert('Sorry, but upload failed :(')
 			}
