@@ -22,7 +22,7 @@
 </div>
 
 <div class="show-if-initialized show-if-logged-in small-margin" style="display:none">
-	<textarea id="note"></textarea><br>
+	<textarea id="note"> Loading... </textarea><br>
 	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
 </div>
 
@@ -36,7 +36,9 @@
 
 <!-- <script src="https://skyaccounts.hns.siasky.net/skyid.js"></script> -->
  
- <script src="http://idtest.local/skyid.js"></script>
+
+<!-- for testing -->
+<script src="http://idtest.local/skyid.js"></script>
 
 <script>
 	// var skyid = new SkyID('Example skapp')
@@ -71,12 +73,14 @@
 		var elem = document.getElementById('note')
 		elem.disabled = 'disabled'
 		elem.className += ' disabled'
-		skyid.getFile('note', function(response) {
-			if (response == false) {
-				alert('Sorry, but note fetching failed :(')
+		skyid.getFile('note', function(response, revision) {
+			console.log('response', response)
+			if (response == '') {
+				elem.value = ''
+			} else {
+				var respObs = JSON.parse(response)
+				elem.value = respObs.data
 			}
-			var respObs = JSON.parse(response)
-			elem.value = respObs.data
 			elem.disabled = ''
 			removeClass(elem, 'disabled')
 		})
