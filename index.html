@@ -34,19 +34,17 @@
 
 <!-- Initialize and setup SkyID -->
 
-<!-- <script src="https://skyaccounts.hns.siasky.net/skyid.js"></script> -->
+<script src="https://skyaccounts.hns.siasky.net/skyid.js"></script>
  
 
 <!-- for testing -->
-<script src="http://idtest.local/skyid.js"></script>
+<!-- <script src="http://idtest.local/skyid.js"></script> -->
 
 <script>
 	// var skyid = new SkyID('Example skapp')
-
-
-	// Optional: listen for callbacks
 	var skyid = new SkyID('Example skapp', skyidEventCallback)
 
+	// Optional: listen for callbacks
 	function skyidEventCallback(message) {
 		switch (message) {
 			case 'login_fail':
@@ -69,18 +67,24 @@
 		fetchNote()
 	}
 
+	// fetch the note
 	function fetchNote() {
+		// disable textarea
 		var elem = document.getElementById('note')
 		elem.disabled = 'disabled'
 		elem.className += ' disabled'
+
+		// fetch file
 		skyid.getFile('note', function(response, revision) {
 			console.log('response', response)
-			if (response == '') {
+			if (response == '') { // file not found
 				elem.value = ''
-			} else {
+			} else { // success
 				var respObs = JSON.parse(response)
 				elem.value = respObs.data
 			}
+
+			// enable textarea
 			elem.disabled = ''
 			removeClass(elem, 'disabled')
 		})
@@ -108,9 +112,8 @@
 		})
 	}
 
+
 	// of course, you can use jQuery, but this example is pure-js
-
-
 	function removeClass(el, classNameToRemove){
 		var elClass = ' ' + el.className + ' ';
 		while(elClass.indexOf(' ' + classNameToRemove + ' ') !== -1){
