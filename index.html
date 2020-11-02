@@ -8,7 +8,7 @@
 </div>
 
 <div class="hide-if-logged-in">
-	<h2>Make a note while using <a href="https:/skynetid.hns.siasky.net">SkyID</a> for authentication</h2>
+	<h2>Make a note while using <a href="https:/skyaccounts.hns.siasky.net">SkyID</a> for authentication</h2>
 
 	<!-- Button for login -->
 	<button onclick="skyid.sessionStart()" class="skyid-button button-blow big-margin">
@@ -18,7 +18,7 @@
 </div>
 
 <div class="show-if-logged-in small-margin">
-	<textarea id="note">Helooo</textarea><br>
+	<textarea id="note"></textarea><br>
 	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
 </div>
 
@@ -29,7 +29,7 @@
 
 
 <!-- Initialize and setup SkyID -->
-<script src="http://skynetid.hns.siasky.net/skyid.js"></script>
+<script src="https://skyaccounts.hns.siasky.net/skyid.js"></script>
 <script>
 	// var skyid = new SkyID('Example skapp')
 
@@ -44,6 +44,7 @@
 				break;
 			case 'login_success':
 				console.log('Login succeed!')
+				fetchNote()
 				break;
 			case 'destroy':
 				console.log('Logout succeed!')
@@ -54,6 +55,25 @@
 		}
 	}
 
+	if (skyid.seed != '') {
+		fetchNote()
+	}
+
+	function fetchNote() {
+		var elem = document.getElementById('note')
+		elem.disabled = 'disabled'
+		elem.className += ' disabled'
+		skyid.getRegistry('note', function(response) {
+			if (response == false) {
+				alert('Sorry, but note fetching failed :(')
+			}
+			var respObs = JSON.parse(response)
+			elem.value = respObs.data
+			elem.disabled = ''
+			removeClass(elem, 'disabled')
+		})
+	}
+
 	function saveNote() {
 		// disable button
 		elem = document.getElementById('save_note')
@@ -61,8 +81,8 @@
 		elem.className += ' disabled'
 
 		// convert note to json
-		let note = document.getElementById('note').innerHTML
-		let json = JSON.stringify({ data: note })
+		var note = document.getElementById('note').value
+		var json = JSON.stringify({ data: note })
 
 		// upload to registry with SkyID key
 		skyid.setRegistry('note', json, function(response) {
@@ -75,7 +95,6 @@
 			elem.disabled = ''
 		})
 	}
-
 
 	// of course, you can use jQuery, but this example is pure-js
 
