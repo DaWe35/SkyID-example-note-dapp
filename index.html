@@ -1,6 +1,7 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
 <meta charset="utf-8">
+
 <title>Note & SkyID</title>
 
 <div class="show-if-initialized show-if-logged-in logout-bar" style="display:none">
@@ -22,7 +23,7 @@
 </div>
 
 <div class="show-if-initialized show-if-logged-in small-margin" style="display:none">
-	<textarea id="note"> Loading... </textarea><br>
+	<textarea id="note" class="p-3 rounded"> Loading... </textarea><br>
 	<button id="save_note" class="skyid-button small-margin-top" onclick="saveNote()">Save unencrypted note</button>
 </div>
 
@@ -69,33 +70,19 @@
 
 	// fetch the note
 	function fetchNote() {
-		// disable textarea
-		var elem = document.getElementById('note')
-		elem.disabled = 'disabled'
-		elem.className += ' disabled'
-
 		// fetch file
 		skyid.getFile('note', function(response, revision) {
-			console.log('response', response)
+			var note = document.getElementById('note')
 			if (response == '') { // file not found
-				elem.value = ''
+				note.value = ''
 			} else { // success
 				var respObs = JSON.parse(response)
-				elem.value = respObs.data
+				note.value = respObs.data
 			}
-
-			// enable textarea
-			elem.disabled = ''
-			removeClass(elem, 'disabled')
 		})
 	}
 
 	function saveNote() {
-		// disable button
-		let elem = document.getElementById('save_note')
-		elem.disabled = 'disabled'
-		elem.className += ' disabled'
-
 		// convert note to json
 		var note = document.getElementById('note').value
 		var json = JSON.stringify({ data: note })
@@ -105,20 +92,6 @@
 			if (response != true) {
 				alert('Sorry, but upload failed :(')
 			}
-			
-			// enable button
-			removeClass(elem, 'disabled')
-			elem.disabled = ''
 		})
-	}
-
-
-	// of course, you can use jQuery, but this example is pure-js
-	function removeClass(el, classNameToRemove){
-		var elClass = ' ' + el.className + ' ';
-		while(elClass.indexOf(' ' + classNameToRemove + ' ') !== -1){
-			elClass = elClass.replace(' ' + classNameToRemove + ' ', '');
-		}
-		el.className = elClass;
 	}
 </script>
