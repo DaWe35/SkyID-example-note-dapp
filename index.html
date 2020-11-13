@@ -42,8 +42,15 @@
 <!-- <script src="http://idtest.local/skyid.js"></script> -->
 
 <script>
-	// var skyid = new SkyID('Example skapp')
-	var skyid = new SkyID('Example skapp', skyidEventCallback)
+	// detect if app is opened on localhost for development
+	if (window.location.hostname == 'idtest.local' || window.location.hostname == 'localhost' || window.location.protocol == 'file:') {
+		var devMode = true
+	} else {
+		var devMode = false
+	}
+
+	var opts = { 'devMode': devMode  }
+	var skyid = new SkyID('Example skapp', skyidEventCallback, opts)
 
 	// Optional: listen for callbacks
 	function skyidEventCallback(message) {
